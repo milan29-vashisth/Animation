@@ -1,53 +1,92 @@
-import React, { useRef } from "react";
-import { Animated, View, StyleSheet, PanResponder, Text } from "react-native";
+import React, { Component } from "react";
+import { View } from "react-native";
 
-const App = () => {
-  const pan = useRef(new Animated.ValueXY()).current;
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event([
-        null,
-        { dx: pan.x, dy: pan.y }
-      ]),
-      onPanResponderRelease: () => {
-        Animated.spring(pan, { toValue: { x: 0, y: 0 } }).start();
-      }
-    })
-  ).current;
+import pokemon from "./src/data/pokemon";
+import pokemon_stats from "./src/data/pokemon-stats";
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.titleText}>Drag & Release this box!</Text>
-      <Animated.View
-        style={{
-          transform: [{ translateX: pan.x }, { translateY: pan.y }]
-        }}
-        {...panResponder.panHandlers}
-      >
-        <View style={styles.box} />
-      </Animated.View>
-    </View>
-  );
+import Header from "./src/components/Header";
+import CardList from "./src/components/CardList";
+import AnimatedModal from "./src/components/AnimatedModal";
+import BigCard from "./src/components/BigCard";
+
+function getRandomInt(max, min) {
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
-const styles = StyleSheet.create({
+type Props = {};
+export default class App extends Component<Props> {
+  state = {
+    isModalVisible: false
+  };
+
+  constructor(props) {
+    super(props);
+    this.pokemon_stats = [];
+  }
+
+  cardAction = () => {};
+
+  viewAction = (pokemon, image) => {
+    this.pokemon_stats = [];
+    pokemon_stats.forEach(item => {
+      this.pokemon_stats.push({
+        label: item,
+        value: getRandomInt(25, 150)
+      });
+    });
+
+    this.setState({
+      pokemon,
+      image,
+      stats: this.pokemon_stats,
+      isModalVisible: true
+    });
+  };
+
+  bookmarkAction = () => {};
+
+  shareAction = () => {};
+
+  closeModal = () => {
+    this.setState({
+      isModalVisible: false
+    });
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Header title={"Poke-Gallery"} />
+        <CardList
+          data={pokemon}
+          cardAction={this.cardAction}
+          viewAction={this.viewAction}
+          bookmarkAction={this.bookmarkAction}
+          shareAction={this.shareAction}
+        />
+        <AnimatedModal
+          title={"View Pokemon"}
+          visible={this.state.isModalVisible}
+          onClose={() => {
+            this.setState({
+              isModalVisible: false
+            });
+          }}
+        >
+          <BigCard
+            title={this.state.pokemon}
+            image={this.state.image}
+            data={this.state.stats}
+          />
+        </AnimatedModal>
+      </View>
+    );
+  }
+}
+
+const styles = {
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  titleText: {
-    fontSize: 14,
-    lineHeight: 24,
-    fontWeight: "bold"
-  },
-  box: {
-    height: 150,
-    width: 150,
-    backgroundColor: "blue",
-    borderRadius: 5
+    backgroundColor: "#fff"
   }
-});
-
-export default App;
+};
