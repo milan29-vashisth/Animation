@@ -1,21 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const icon_color = "#586069";
 const icon_size = 15;
 
-type Props = {};
-export default class IconButton extends Component<Props> {
-  render() {
-    const { icon, onPress, data } = this.props;
-
+const IconButton=({ icon, onPress, data })=> {
     return (
       <TouchableWithoutFeedback
         onPress={() => {
           onPress(data);
         }}
-      >
+ >
         <View>
           <Icon
             name={icon}
@@ -27,7 +23,7 @@ export default class IconButton extends Component<Props> {
       </TouchableWithoutFeedback>
     );
   }
-}
+
 
 const styles = {
   icon: {
@@ -35,3 +31,4 @@ const styles = {
     paddingRight: 5
   }
 };
+export default IconButton

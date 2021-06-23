@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 
 import pokemon from "./src/data/pokemon";
@@ -13,32 +13,20 @@ function getRandomInt(max, min) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-type Props = {};
-export default class App extends Component<Props> {
-  state = {
-    isModalVisible: false
-  };
-
-  constructor(props) {
-    super(props);
-    this.pokemon_stats = [];
-  }
+const App =({pokemon_stats})=> {
+  const [ isModalVisible, setUsername] = useState(false);
 
   cardAction = () => {};
 
   viewAction = (pokemon, image) => {
-    this.pokemon_stats = [];
+    pokemon_stats = [];
     pokemon_stats.forEach(item => {
-      this.pokemon_stats.push({
+      pokemon_stats.push({
         label: item,
         value: getRandomInt(25, 150)
       });
     });
-
-    this.setState({
-      pokemon,
-      image,
-      stats: this.pokemon_stats,
+    setUsername({
       isModalVisible: true
     });
   };
@@ -48,45 +36,43 @@ export default class App extends Component<Props> {
   shareAction = () => {};
 
   closeModal = () => {
-    this.setState({
+    setState({
       isModalVisible: false
     });
   };
 
-  render() {
     return (
       <View style={styles.container}>
         <Header title={"Poke-Gallery"} />
         <CardList
-          data={pokemon}
-          cardAction={this.cardAction}
-          viewAction={this.viewAction}
-          bookmarkAction={this.bookmarkAction}
-          shareAction={this.shareAction}
+         data={pokemon}
+         cardAction={cardAction}
+         viewAction={viewAction}
+         bookmarkAction={bookmarkAction}
+         shareAction={shareAction}
         />
         <AnimatedModal
           title={"View Pokemon"}
-          visible={this.state.isModalVisible}
+          visible={isModalVisible}
           onClose={() => {
-            this.setState({
+            setUsername({
               isModalVisible: false
             });
           }}
         >
-          <BigCard
-            title={this.state.pokemon}
-            image={this.state.image}
-            data={this.state.stats}
-          />
+          {/* <BigCard
+            title={pokemon}
+            image={image}
+            data={stats}
+          /> */}
         </AnimatedModal>
       </View>
     );
   }
-}
-
 const styles = {
   container: {
     flex: 1,
     backgroundColor: "#fff"
   }
 };
+export default App;

@@ -1,11 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { View, Text, Image } from "react-native";
 import DataRow from "./DataRow";
-
-type Props = {};
-export default class BigCard extends Component<Props> {
-  render() {
-    const { image, title, data } = this.props;
+ const BigCard =({ image, title, data })=>{
 
     return (
       <View style={styles.container}>
@@ -20,7 +16,7 @@ export default class BigCard extends Component<Props> {
         )}
       </View>
     );
-  }
+        }
 
   renderDataRows = data => {
     return data.map((item, index) => {
@@ -34,7 +30,7 @@ export default class BigCard extends Component<Props> {
       );
     });
   };
-}
+
 
 const styles = {
   container: {
@@ -59,3 +55,4 @@ const styles = {
     padding: 20
   }
 };
+export default BigCard;

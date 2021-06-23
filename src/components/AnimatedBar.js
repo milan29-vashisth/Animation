@@ -1,13 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { View } from "react-native";
 
-type Props = {};
-export default class AnimatedBar extends Component<Props> {
-  render() {
-    let widthStyle = { width: this.props.value };
+const AnimatedBar =({value})=> {
+    let widthStyle = { width: value };
     return <View style={[styles.bar, widthStyle]} />;
   }
-}
+
 
 const styles = {
   bar: {
@@ -17,3 +15,4 @@ const styles = {
     backgroundColor: "#e75832"
   }
 };
+export default AnimatedBar
